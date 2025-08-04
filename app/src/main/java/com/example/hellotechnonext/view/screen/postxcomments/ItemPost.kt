@@ -1,4 +1,4 @@
-package com.example.hellotechnonext.view.screen.post
+package com.example.hellotechnonext.view.screen.postxcomments
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

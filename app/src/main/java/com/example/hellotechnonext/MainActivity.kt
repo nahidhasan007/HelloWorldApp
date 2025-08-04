@@ -16,8 +16,8 @@ import androidx.navigation.NavHostController
 import com.example.hellotechnonext.coordinator.BaseChildNavGraph
 import com.example.hellotechnonext.coordinator.BaseNavCoordinator
 import com.example.hellotechnonext.ui.theme.HellotechnonextTheme
-import com.example.hellotechnonext.view.screen.post.HomeScreen
-import com.example.hellotechnonext.view.screen.post.PostUiMainScreen
+import com.example.hellotechnonext.view.screen.postxcomments.HomeScreen
+import com.example.hellotechnonext.view.screen.postxcomments.PostUiMainScreen
 
 class MainActivity : AppCompatActivity() {
 

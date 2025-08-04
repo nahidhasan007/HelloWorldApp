@@ -1,4 +1,4 @@
-package com.example.hellotechnonext.view.screen.post
+package com.example.hellotechnonext.view.screen.postxcomments
 
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text

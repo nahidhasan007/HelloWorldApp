@@ -1,14 +1,12 @@
-package com.example.hellotechnonext.view.screen.post
+package com.example.hellotechnonext.view.screen.postxcomments
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -28,7 +26,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.example.hellotechnonext.coordinator.BaseChildNavGraph
+import com.example.hellotechnonext.data.domain.Tab
 import com.example.hellotechnonext.data.repository.DiContainer
+import com.example.hellotechnonext.intent.ViewIntent
 import com.example.hellotechnonext.view.MainViewModel
 
 class HomeScreen(private val navController: NavHostController) : BaseChildNavGraph {
@@ -55,26 +55,16 @@ class HomeScreen(private val navController: NavHostController) : BaseChildNavGra
         var selectedTab by remember { mutableStateOf(Tab.POSTS) }
 
         Column(modifier = Modifier.fillMaxWidth()) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                Button(onClick = {
-                    selectedTab = Tab.POSTS
-                    viewModel.fetchAllPosts()
-                }) {
-                    Text("Load Posts from API")
-                }
 
-                Button(onClick = {
-                    selectedTab = Tab.COMMENTS
-                    viewModel.fetchAllComments() // You need this method implemented in your ViewModel
-                }) {
-                    Text("Load Comments from API")
-                }
-            }
+            TabSelector(selectedTab = selectedTab, onTabSelected = { tab ->
+                selectedTab = tab
+                viewModel.handleIntent(
+                    when (tab) {
+                        Tab.POSTS -> ViewIntent.LoadPosts
+                        Tab.COMMENTS -> ViewIntent.LoadComments
+                    }
+                )
+            })
 
             Spacer(modifier = Modifier.height(8.dp))
 
@@ -101,9 +91,8 @@ class HomeScreen(private val navController: NavHostController) : BaseChildNavGra
                         )
                         Spacer(modifier = Modifier.height(16.dp))
                         Button(onClick = {
-                            // Retry fetch based on selected tab
-                            if (selectedTab == Tab.POSTS) viewModel.fetchAllPosts()
-                            else viewModel.fetchAllComments()
+                            if (selectedTab == Tab.POSTS) viewModel.handleIntent(ViewIntent.LoadPosts)
+                            else viewModel.handleIntent(ViewIntent.LoadComments)
                         }) {
                             Text("Retry")
                         }
@@ -137,10 +126,5 @@ class HomeScreen(private val navController: NavHostController) : BaseChildNavGra
                 }
             }
         }
-    }
-
-    enum class Tab {
-        POSTS,
-        COMMENTS
     }
 }
