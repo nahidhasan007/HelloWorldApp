@@ -9,19 +9,23 @@ import com.example.hellotechnonext.data.domain.Comment
 import com.example.hellotechnonext.data.domain.Post
 
 @Composable
-fun PostListScreen(posts: List<Post>) {
+fun PostListScreen(posts: List<Post>, onItemClick: (Post) -> Unit = {}) {
     LazyColumn{
         itemsIndexed(posts) {  index, post->
-            PostCard(post = post)
+            PostCard(post = post){
+                onItemClick(post)
+            }
         }
     }
 }
 
 @Composable
-fun CommentListScreen(comments: List<Comment>) {
+fun CommentListScreen(comments: List<Comment>, onItemClick: (Comment) -> Unit) {
     LazyColumn{
         itemsIndexed(comments) {  index, comment->
-            CommentCard(comment = comment)
+            CommentCard(comment = comment, {
+                onItemClick(comment)
+            })
         }
     }
 }

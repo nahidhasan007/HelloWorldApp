@@ -30,6 +30,8 @@ import com.example.hellotechnonext.data.domain.Tab
 import com.example.hellotechnonext.data.repository.DiContainer
 import com.example.hellotechnonext.intent.ViewIntent
 import com.example.hellotechnonext.view.MainViewModel
+import com.example.hellotechnonext.view.screen.postxcommentsdetails.PostCommentDetailScreen
+import com.google.gson.Gson
 
 class HomeScreen(private val navController: NavHostController) : BaseChildNavGraph {
     object Route {
@@ -51,6 +53,7 @@ class HomeScreen(private val navController: NavHostController) : BaseChildNavGra
         val viewModel: MainViewModel = viewModel(factory = DiContainer.postViewModelFactory)
         val uiState by viewModel.uiState.collectAsState()
         val uiStateComments by viewModel.uiStateComments.collectAsState()
+        val gson = Gson()
 
         var selectedTab by remember { mutableStateOf(Tab.POSTS) }
 
@@ -119,9 +122,17 @@ class HomeScreen(private val navController: NavHostController) : BaseChildNavGra
 
                 else -> {
                     if (selectedTab == Tab.POSTS) {
-                        PostListScreen(uiState.posts)
+                        PostListScreen(uiState.posts, onItemClick = { post ->
+                            val jsonString = gson.toJson(post)
+                            navController.currentBackStackEntry?.savedStateHandle?.set("post", jsonString)
+                            navController.navigate(PostCommentDetailScreen.Route.detailScreen)
+                        })
                     } else {
-                        CommentListScreen(uiStateComments.comments)
+                        CommentListScreen(uiStateComments.comments, onItemClick = {
+                            val jsonString = gson.toJson(it)
+                            navController.currentBackStackEntry?.savedStateHandle?.set("comment", jsonString)
+                            navController.navigate(PostCommentDetailScreen.Route.detailScreen)
+                        })
                     }
                 }
             }

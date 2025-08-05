@@ -17,7 +17,7 @@ import com.example.hellotechnonext.coordinator.BaseChildNavGraph
 import com.example.hellotechnonext.coordinator.BaseNavCoordinator
 import com.example.hellotechnonext.ui.theme.HellotechnonextTheme
 import com.example.hellotechnonext.view.screen.postxcomments.HomeScreen
-import com.example.hellotechnonext.view.screen.postxcomments.PostUiMainScreen
+import com.example.hellotechnonext.view.screen.postxcommentsdetails.PostCommentDetailScreen
 
 class MainActivity : AppCompatActivity() {
 
@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity() {
 
         val mList = mutableListOf(
             HomeScreen(mNavHostController),
-            PostUiMainScreen(mNavHostController)
+            PostCommentDetailScreen(mNavHostController)
         )
         return mList
     }
