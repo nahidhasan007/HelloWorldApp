@@ -28,8 +28,9 @@ import androidx.navigation.compose.composable
 import com.example.hellotechnonext.coordinator.BaseChildNavGraph
 import com.example.hellotechnonext.data.domain.Tab
 import com.example.hellotechnonext.data.repository.DiContainer
-import com.example.hellotechnonext.intent.ViewIntent
+import com.example.hellotechnonext.intents.ViewIntent
 import com.example.hellotechnonext.view.MainViewModel
+import com.example.hellotechnonext.view.screen.components.DeliveryTimeBottomSheet
 import com.example.hellotechnonext.view.screen.postxcommentsdetails.PostCommentDetailScreen
 import com.google.gson.Gson
 
@@ -56,6 +57,7 @@ class HomeScreen(private val navController: NavHostController) : BaseChildNavGra
         val gson = Gson()
 
         var selectedTab by remember { mutableStateOf(Tab.POSTS) }
+        var showState by remember { mutableStateOf(false) }
 
         Column(modifier = Modifier.fillMaxWidth()) {
 
@@ -65,6 +67,7 @@ class HomeScreen(private val navController: NavHostController) : BaseChildNavGra
                     when (tab) {
                         Tab.POSTS -> ViewIntent.LoadPosts
                         Tab.COMMENTS -> ViewIntent.LoadComments
+                        Tab.OTHER -> ViewIntent.LoadOther
                     }
                 )
             })
@@ -111,7 +114,7 @@ class HomeScreen(private val navController: NavHostController) : BaseChildNavGra
                     }
                 }
 
-                selectedTab == Tab.COMMENTS && uiStateComments.isLoading-> {
+                selectedTab == Tab.COMMENTS && uiStateComments.isLoading -> {
                     Box(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
@@ -121,20 +124,38 @@ class HomeScreen(private val navController: NavHostController) : BaseChildNavGra
                 }
 
                 else -> {
-                    if (selectedTab == Tab.POSTS) {
-                        PostListScreen(uiState.posts, onItemClick = { post ->
-                            val jsonString = gson.toJson(post)
-                            navController.currentBackStackEntry?.savedStateHandle?.set("post", jsonString)
-                            navController.navigate(PostCommentDetailScreen.Route.detailScreen)
-                        })
-                    } else {
-                        CommentListScreen(uiStateComments.comments, onItemClick = {
-                            val jsonString = gson.toJson(it)
-                            navController.currentBackStackEntry?.savedStateHandle?.set("comment", jsonString)
-                            navController.navigate(PostCommentDetailScreen.Route.detailScreen)
-                        })
+                    when (selectedTab) {
+                        Tab.POSTS -> {
+                            PostListScreen(uiState.posts, onItemClick = { post ->
+                                val jsonString = gson.toJson(post)
+                                navController.currentBackStackEntry?.savedStateHandle?.set(
+                                    "post",
+                                    jsonString
+                                )
+                                navController.navigate(PostCommentDetailScreen.Route.detailScreen)
+                            })
+                        }
+
+                        Tab.COMMENTS -> {
+                            CommentListScreen(uiStateComments.comments, onItemClick = {
+                                val jsonString = gson.toJson(it)
+                                navController.currentBackStackEntry?.savedStateHandle?.set(
+                                    "comment",
+                                    jsonString
+                                )
+                                navController.navigate(PostCommentDetailScreen.Route.detailScreen)
+                            })
+                        }
+
+                        else -> {
+                            showState = !showState
+                        }
                     }
                 }
+            }
+
+            if (showState) {
+                DeliveryTimeBottomSheet(onDismiss = { showState = false }, {}, {})
             }
         }
     }

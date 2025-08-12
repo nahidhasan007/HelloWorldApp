@@ -26,14 +26,21 @@ fun TabSelector(
             onClick = { onTabSelected(Tab.POSTS) },
             enabled = selectedTab != Tab.POSTS
         ) {
-            Text("Load Posts")
+            Text("Posts")
         }
 
         Button(
             onClick = { onTabSelected(Tab.COMMENTS) },
             enabled = selectedTab != Tab.COMMENTS
         ) {
-            Text("Load Comments")
+            Text("Comments")
+        }
+
+        Button(
+            onClick = { onTabSelected(Tab.OTHER) },
+            enabled = selectedTab != Tab.OTHER
+        ) {
+            Text("other")
         }
     }
 }

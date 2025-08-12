@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import com.example.hellotechnonext.intent.ViewIntent
+import com.example.hellotechnonext.intents.ViewIntent
 
 class MainViewModel(private val repository: MainRepository) : ViewModel() {
 
@@ -25,6 +25,7 @@ class MainViewModel(private val repository: MainRepository) : ViewModel() {
             when (intent) {
                 is ViewIntent.LoadPosts -> fetchAllPosts()
                 is ViewIntent.LoadComments -> fetchAllComments()
+                ViewIntent.LoadOther -> {}
             }
         }
     }

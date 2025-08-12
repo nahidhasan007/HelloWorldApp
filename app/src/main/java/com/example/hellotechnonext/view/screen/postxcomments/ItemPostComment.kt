@@ -77,8 +77,7 @@ fun CommentCard(comment: Comment, onItemClick: (Comment) -> Unit = {}) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewPostCard() {
-    val samplePost =
-        Post(1, 1, "Jetpack Compose", "Jetpack Compose simplifies UI development on Android.")
+    val samplePost = Post(1, 1, "Jetpack Compose", "Jetpack Compose simplifies UI development on Android.")
       PostCard(samplePost)
 }
 
