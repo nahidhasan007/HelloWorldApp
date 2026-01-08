@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.hellotechnonext"
+    namespace = "com.example.postapp"
     compileSdk = 36
 
     defaultConfig {
